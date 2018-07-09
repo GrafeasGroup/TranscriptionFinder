@@ -37,7 +37,7 @@
         ((submissionId) => {
 
             //Right, now let me fetch comments and check for transcript
-            fetch('https://' + location.host + '/' + submissionId + '.json?limit=999999').then(resp => resp.json().then(submission => {
+            fetch('https://' + location.host + '/' + submissionId + '.json?limit=999999&raw_json=1').then(resp => resp.json().then(submission => {
                 if (!(submission instanceof Array)) {
                     throw new Error("Submission isn't array", comments);
                 }
@@ -51,7 +51,7 @@
                         return;
                     } //Shouldn't happen, but just in case
 
-                    if (comment.data.body.indexOf("^^I'm&amp;#32;a&amp;#32;human&amp;#32;volunteer&amp;#32;content&amp;#32;transcriber&amp;#32;for&amp;#32;Reddit&amp;#32;and&amp;#32;you&amp;#32;could&amp;#32;be&amp;#32;too!&amp;#32;[If&amp;#32;you'd&amp;#32;like&amp;#32;more&amp;#32;information&amp;#32;on&amp;#32;what&amp;#32;we&amp;#32;do&amp;#32;and&amp;#32;why&amp;#32;we&amp;#32;do&amp;#32;it,&amp;#32;click&amp;#32;here!](https://www.reddit.com/r/TranscribersOfReddit/wiki/index)") > -1) {
+                    if (comment.data.body.indexOf("^^I'm&#32;a&#32;human&#32;volunteer&#32;content&#32;transcriber&#32;for&#32;Reddit&#32;and&#32;you&#32;could&#32;be&#32;too!&#32;[If&#32;you'd&#32;like&#32;more&#32;information&#32;on&#32;what&#32;we&#32;do&#32;and&#32;why&#32;we&#32;do&#32;it,&#32;click&#32;here!](https://www.reddit.com/r/TranscribersOfReddit/wiki/index)") > -1) {
                         var url = "https://" + location.host + "/r/" + submission[0].data.children[0].data.subreddit + "/comments/" + submissionId + "/_/" + comment.data.id;
 
                         console.log(url);

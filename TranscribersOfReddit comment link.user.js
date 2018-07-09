@@ -1,19 +1,25 @@
 (() => {
 
     // ==UserScript==
-    // @name     Transcript Available?
-    // @version  0.1.0
-    // @grant    none
-    // @match    https://*.reddit.com/r/*
-    // @author   Mr_Transcriber
-    // @run-at   document-end
+    // @name        Transcription Finder for Reddit
+    // @description Finds Reddit post transcriptions submitted by r/TranscribersOfReddit volunteers and inserts a link to them after  the post title.
+    // @version     0.1.0
+    // @grant       none
+    // @match       https://*.reddit.com/r/*
+    // @match       https://*.reddit.com/
+    // @match       https://*.reddit.com/?*
+    // @author      Mr_Transcriber
+    // @run-at      document-end
+    // @noframes
+    // @license     MIT
+    // @namespace   https://grafeas.org
     // ==/UserScript==
 
     if (location.pathname.substr(0, 3) !== '/r/') return;
 
     if (['casualuk', 'programmerhumor', 'quityourbullshit', 'antimlm'].indexOf(location.pathname.split `/` [2].toLowerCase()) === -1) return;
 
-    var siteTable = document.getElementById`siteTable`;
+    var siteTable = document.getElementById `siteTable`;
 
     if (!(siteTable && siteTable.getAttribute('class').indexOf('linklisting') > -1)) return;
 

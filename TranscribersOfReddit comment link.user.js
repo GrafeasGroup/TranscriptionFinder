@@ -3,7 +3,7 @@
     // ==UserScript==
     // @name        Transcription Finder for Reddit
     // @description Finds Reddit post transcriptions submitted by r/TranscribersOfReddit volunteers and inserts a link to them after  the post title.
-    // @version     0.1.0
+    // @version     0.1.1
     // @grant       none
     // @match       https://*.reddit.com/r/*
     // @match       https://*.reddit.com/
@@ -20,7 +20,8 @@
     if (typeof localStorage['TranscriptionFinder_subreddits_update'] === "undefined" || localStorage['TranscriptionFinder_subreddits_update'] < Date.now()) {
 
         fetch('https://' + location.host + '/r/TranscribersOfReddit/wiki/subreddits.json').then(response => response.json().then(contents => {
-                subreddits = contents.data.content_md.split(/\r?\n/);
+
+            subreddits = contents.data.content_md.toLowerCase().split(/\r?\n/);
 
             localStorage['TranscriptionFinder_subreddits'] = subreddits.join `,`;
 

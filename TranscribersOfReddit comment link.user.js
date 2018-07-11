@@ -3,7 +3,7 @@
     // ==UserScript==
     // @name        Transcription Finder for Reddit
     // @description Finds Reddit post transcriptions submitted by r/TranscribersOfReddit volunteers and inserts a link to them after  the post title.
-    // @version     0.1.1
+    // @version     0.1.2
     // @grant       none
     // @match       https://*.reddit.com/r/*
     // @match       https://*.reddit.com/
@@ -40,9 +40,17 @@
     //Functions defined like this get detected by the JS engine before the script is executed, so it'll be available above.
     function main(subreddits) {
 
-        if (location.pathname.substr(0, 3) !== '/r/') return;
 
-        if (subreddits.indexOf(location.pathname.split `/` [2].toLowerCase()) === -1) return;
+        // No need to iterate over the siteTable on non-participating subreddits
+        if (location.pathname.substr(0, 3) === '/r/') {
+
+            let subredditFromURL = location.pathname.split `/` [2].toLowerCase();
+
+            if (subredditFromURL !== 'all' && subredditFromURL !== 'mod' && subredditFromURL !== 'friends' && subredditFromURL !== 'popular' && subredditFromURL !== 'dashboard' && subredditFromURL.indexOf('+') === -1 && subredditFromURL.indexOf('-') === -1 && subreddits.indexOf(subredditFromURL) === -1) return; //Will never return for filtered (e.g. /r/all-test) or combined (e.g. /r/test+example). (Room for further optimization.)
+
+
+        }
+
 
         var siteTable = document.getElementById `siteTable`;
 
@@ -56,6 +64,7 @@
 
             if (element.getAttribute('class').indexOf('self') > -1) return;
 
+            if (subreddits.indexOf(element.getAttribute('data-subreddit').toLowerCase()) === -1) return; // If we're scanning the siteTable on r/all, r/popular, the front page, user pages, multireddits etc., we only need to check for transcripts for links to participating subreddits
 
             var submissionId = element.id.replace('thing_t3_', '');
 
